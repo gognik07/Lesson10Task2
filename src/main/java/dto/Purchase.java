@@ -2,6 +2,7 @@ package dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
 @Table(name = "PurchaseList")
 public class Purchase {
 
+    @Id
     @Column(name = "student_name")
     private String studentName;
 
