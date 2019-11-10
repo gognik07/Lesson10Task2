@@ -26,16 +26,18 @@ public class Main {
         System.out.println("price: " + course.getPrice());
         System.out.println("price per hour: " + course.getPricePerHour());
         System.out.println("students count: " + course.getStudentsCount());
-        System.out.println("teacher id: " + course.getTeacherId());
+        System.out.println("teacher's name: " + course.getTeacher().getName());
+        System.out.println("teacher's age: " + course.getTeacher().getAge());
+        System.out.println("teacher's salary: " + course.getTeacher().getSalary());
         System.out.println("type: " + course.getType());
+        System.out.println("Students on course:");
+        for (Student student : course.getStudents()) {
+            System.out.println("Student's name: " + student.getName());
+            System.out.println("Student's age: " + student.getAge());
+            System.out.println("Student's registration date: " + student.getRegistrationDate());
+            System.out.println("---------------------------------");
+        }
         System.out.println();
-
-        Student student = session.get(Student.class, 1);
-        System.out.println("Info about student:");
-        System.out.println("id: " + student.getId());
-        System.out.println("name: " + student.getName());
-        System.out.println("registration date: " + student.getRegistrationDate());
-        System.out.println("age: " + student.getAge());
 
         sessionFactory.close();
     }

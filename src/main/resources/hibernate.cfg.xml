@@ -21,5 +21,8 @@
 
         <mapping class="dto.Course" />
         <mapping class="dto.Student" />
+        <mapping class="dto.Teacher" />
+        <mapping class="dto.Subscription" />
+        <mapping class="dto.Purchase" />
     </session-factory>
 </hibernate-configuration>
