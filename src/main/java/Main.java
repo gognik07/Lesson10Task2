@@ -1,11 +1,14 @@
 import dto.Course;
 import dto.Student;
+import dto.Subscription;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.List;
 
 public class Main {
 
@@ -38,6 +41,9 @@ public class Main {
             System.out.println("---------------------------------");
         }
         System.out.println();
+
+        List<Subscription> subscriptions = session.createSQLQuery("SELECT * FROM Subscriptions").addEntity(Subscription.class).list();
+
 
         sessionFactory.close();
     }
