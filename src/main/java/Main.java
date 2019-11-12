@@ -34,16 +34,6 @@ public class Main {
         System.out.println("teacher's salary: " + course.getTeacher().getSalary());
         System.out.println("type: " + course.getType());
         System.out.println("Students on course:");
-        for (Student student : course.getStudents()) {
-            System.out.println("Student's name: " + student.getName());
-            System.out.println("Student's age: " + student.getAge());
-            System.out.println("Student's registration date: " + student.getRegistrationDate());
-            System.out.println("---------------------------------");
-        }
-        System.out.println();
-
-        List<Subscription> subscriptions = session.createSQLQuery("SELECT * FROM Subscriptions").addEntity(Subscription.class).list();
-
 
         sessionFactory.close();
     }
