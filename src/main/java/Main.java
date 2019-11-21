@@ -1,6 +1,4 @@
-import dto.Course;
-import dto.Student;
-import dto.Subscription;
+import dto.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -14,26 +12,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+        StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernateCreate.cfg.xml").build();
         Metadata metadata = new MetadataSources(registry).getMetadataBuilder().build();
         SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
+        registry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+        metadata = new MetadataSources(registry).getMetadataBuilder().build();
+        sessionFactory = metadata.getSessionFactoryBuilder().build();
+
         Session session = sessionFactory.openSession();
 
-        Course course = session.get(Course.class, 1);
-        System.out.println("Info about course:");
-        System.out.println("id: " + course.getName());
-        System.out.println("name: " + course.getName());
-        System.out.println("description: " + course.getDescription());
-        System.out.println("duration: " + course.getDuration());
-        System.out.println("price: " + course.getPrice());
-        System.out.println("price per hour: " + course.getPricePerHour());
-        System.out.println("students count: " + course.getStudentsCount());
-        System.out.println("teacher's name: " + course.getTeacher().getName());
-        System.out.println("teacher's age: " + course.getTeacher().getAge());
-        System.out.println("teacher's salary: " + course.getTeacher().getSalary());
-        System.out.println("type: " + course.getType());
-        System.out.println("Students on course:");
+        List<Purchase> purchaseList = session.createQuery("From " + Purchase.class.getSimpleName()).getResultList();
+
+        for (Purchase purchase : purchaseList) {
+            String hql = "From " + Student.class.getSimpleName() + " where name = '" + purchase.getStudentName() + "'";
+            Student student = (Student)session.createQuery(hql).getSingleResult();
+            int studentId = student.getId();
+
+            hql = "From " + Course.class.getSimpleName() + " where name = '" + purchase.getCourseName() + "'";
+            Course course = (Course) session.createQuery(hql).getSingleResult();
+            int courseId = course.getId();
+
+            PurchaseId purchaseId = new PurchaseId();
+            purchaseId.setStudentId(studentId);
+            purchaseId.setCourseId(courseId);
+            session.save(purchaseId);
+        }
 
         sessionFactory.close();
     }

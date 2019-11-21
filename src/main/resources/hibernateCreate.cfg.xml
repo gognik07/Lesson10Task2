@@ -17,13 +17,8 @@
         <!-- Set the current session context -->
         <property name="current_session_context_class">thread</property>
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">create</property>
 
-        <mapping class="dto.Course" />
-        <mapping class="dto.Student" />
-        <mapping class="dto.Teacher" />
-        <mapping class="dto.Subscription" />
-        <mapping class="dto.Purchase" />
         <mapping class="dto.PurchaseId" />
     </session-factory>
 </hibernate-configuration>
