@@ -50,13 +50,12 @@ public class Main {
 
         for (Course course : courses) {
             for (Student student : course.getStudents()) {
-                PurchaseId purchaseId = new PurchaseId();
-                purchaseId.setStudentId(student.getId());
-                purchaseId.setCourseId(course.getId());
-                session.save(purchaseId);
+                PurchaseList purchaseList = new PurchaseList();
+                purchaseList.setStudent(student);
+                purchaseList.setCourse(course);
+                session.save(purchaseList);
             }
         }
-
 
         sessionFactory.close();
     }
