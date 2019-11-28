@@ -6,6 +6,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class Main {
@@ -22,22 +25,38 @@ public class Main {
 
         Session session = sessionFactory.openSession();
 
-        List<Purchase> purchaseList = session.createQuery("From " + Purchase.class.getSimpleName()).getResultList();
+//        List<Purchase> purchaseList = session.createQuery("From " + Purchase.class.getSimpleName()).getResultList();
+//
+//        for (Purchase purchase : purchaseList) {
+//            String hql = "From " + Student.class.getSimpleName() + " where name = '" + purchase.getStudentName() + "'";
+//            Student student = (Student)session.createQuery(hql).getSingleResult();
+//            int studentId = student.getId();
+//
+//            hql = "From " + Course.class.getSimpleName() + " where name = '" + purchase.getCourseName() + "'";
+//            Course course = (Course) session.createQuery(hql).getSingleResult();
+//            int courseId = course.getId();
+//
+//            PurchaseId purchaseId = new PurchaseId();
+//            purchaseId.setStudentId(studentId);
+//            purchaseId.setCourseId(courseId);
+//            session.save(purchaseId);
+//        }
 
-        for (Purchase purchase : purchaseList) {
-            String hql = "From " + Student.class.getSimpleName() + " where name = '" + purchase.getStudentName() + "'";
-            Student student = (Student)session.createQuery(hql).getSingleResult();
-            int studentId = student.getId();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Course> query = builder.createQuery(Course.class);
+        Root<Course> root = query.from(Course.class);
+        query.select(root);
+        List<Course> courses = session.createQuery(query).getResultList();
 
-            hql = "From " + Course.class.getSimpleName() + " where name = '" + purchase.getCourseName() + "'";
-            Course course = (Course) session.createQuery(hql).getSingleResult();
-            int courseId = course.getId();
-
-            PurchaseId purchaseId = new PurchaseId();
-            purchaseId.setStudentId(studentId);
-            purchaseId.setCourseId(courseId);
-            session.save(purchaseId);
+        for (Course course : courses) {
+            for (Student student : course.getStudents()) {
+                PurchaseId purchaseId = new PurchaseId();
+                purchaseId.setStudentId(student.getId());
+                purchaseId.setCourseId(course.getId());
+                session.save(purchaseId);
+            }
         }
+
 
         sessionFactory.close();
     }
